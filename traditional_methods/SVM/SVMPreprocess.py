@@ -9,8 +9,8 @@ train_data_half_aug=read_data("../../mnist/mnist_train/mnist_train_cc1.0_data")
 test_data_half_aug=read_data("../../mnist/mnist_test/mnist_test_cc1.0_data")
 train_data_aug=read_data("../../mnist/mnist_train/mnist_train_cc1.0_crop45_data")
 test_data_aug=read_data("../../mnist/mnist_test/mnist_test_cc1.0_crop45_data")
-train_label=np.fromfile("./mnist/mnist_train/mnist_train_label",dtype=np.uint8)
-test_label=np.fromfile("./mnist/mnist_test/mnist_test_label",dtype=np.uint8)
+train_label=np.fromfile("../../mnist/mnist_train/mnist_train_label",dtype=np.uint8)
+test_label=np.fromfile("../../mnist/mnist_test/mnist_test_label",dtype=np.uint8)
 
 # Dimensionality reduction of keep-largest-cc datasets
 pca=PCA(n_components=120)

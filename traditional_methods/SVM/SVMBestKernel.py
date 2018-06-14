@@ -5,10 +5,10 @@ from sklearn.multiclass import OneVsOneClassifier
 from util import *
 
 # read data
-train_data=read_data("./mnist/mnist_train/mnist_train_data")
-test_data=read_data("./mnist/mnist_test/mnist_test_data")
-train_label=np.fromfile("./mnist/mnist_train/mnist_train_label",dtype=np.uint8)
-test_label=np.fromfile("./mnist/mnist_test/mnist_test_label",dtype=np.uint8)
+train_data=read_data("../../mnist/mnist_train/mnist_train_data")
+test_data=read_data("../../mnist/mnist_test/mnist_test_data")
+train_label=np.fromfile("../../mnist/mnist_train/mnist_train_label",dtype=np.uint8)
+test_label=np.fromfile("../../mnist/mnist_test/mnist_test_label",dtype=np.uint8)
 
 # Reduce data to 120 dimension.
 pca=PCA(n_components=120)
