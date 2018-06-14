@@ -1,4 +1,4 @@
-# CS420 Machine Learning, Final Project
+# CS420 Machine Learning Final Project
 Classification on modified MNIST dataset
 
 ## Contents
