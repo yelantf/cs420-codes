@@ -1,12 +1,13 @@
-# CS420 Machine Learning, Final Project
+# CS420 Machine Learning Final Project
 Classification on modified MNIST dataset
 
 ## Contents
 
-* [Requirements](#Requirements)
-* [Prepare Data](#Prepare-Data)
-* [Traditonal Methods](#Traditonal-Methods)
-* [Deep Learning Methods](#Deep-Learning-Methods)
+- [Requirements](#requirements)
+- [Prepare Data](#prepare-data)
+- [Traditonal Methods](#traditonal-methods)
+- [Deep Learning Methods](#deep-learning-methods)
+- [Team Member](#team-member)
 
 ## Requirements
 - [NumPy](https://github.com/numpy/numpy)
@@ -109,7 +110,7 @@ In this section, we implement FC and CNN baselines for classification. Three met
 
 Each model is in a seperate folder in [deep_learning_methods/](./deep_learning_methods). To train a model, please go into the corresponding folder and run `train_xxx.py`. For example, to train a baseline CNN model, you can do as follows:
 
-```python
+```bash
 cd deep_learning_methods/CNN_baseline/
 python train_cnn.py
 ```
@@ -118,9 +119,9 @@ python train_cnn.py
 
 ||Baseline|Largest CC|CC Centralization|SegNet|LocNet|
 |:---:|:---:|:---:|:---:|:---:|:---:|
-|FC|90.11|92.46|92.78|99.03|**99.28**|
-|CNN|99.47|99.31|99.40|99.88|**99.90**|
-|PointNet|91.02|
+|FC|90.11%|92.46%|92.78%|99.03%|**99.28%**|
+|CNN|99.47%|99.31%|99.40%|99.88%|**99.90%**|
+|PointNet|91.02%|
 
 ___note___: ``CC'' stands for connected components.
 
@@ -135,3 +136,8 @@ ___note___: ``CC'' stands for connected components.
 <div align=center>
 <img src="./img/locnet_vis.png" width="600" />
 </div>
+
+## Team Member
+
+- [Jiajun Tang](https://github.com/yelantingfeng)
+- [Chenxi Wang](https://github.com/chenxi-wang)
