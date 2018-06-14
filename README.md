@@ -23,7 +23,7 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
 
 <div align=center>
 
-<img src="./deep_learning_methods/img/segnet_vis.png" width="350" />
+<img src="./deep_learning_methods/img/segnet_vis.png" width="500" />
 
 ![](./deep_learning_methods/img/segnet_vis.png)
 
