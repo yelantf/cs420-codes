@@ -9,7 +9,7 @@ Classification on modified MNIST dataset
 - [PyTorch](https://github.com/pytorch/pytorch) [0.4]
 
 ## Prepare Data
-Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them to [mnist](./mnist) folder, the folder structure shou look like this:
+Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them to [mnist](./mnist) folder, the folder structure should look like this:
 
     ---- mnist/
         ---- mnist_train/
@@ -17,6 +17,6 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
 
 ## Tratditonal Methods
 
-## Deep Learning Method
+## Deep Learning Methods
 
 ## 
