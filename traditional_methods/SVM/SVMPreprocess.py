@@ -4,7 +4,7 @@ from sklearn.decomposition import PCA
 from sklearn.multiclass import OneVsOneClassifier
 from util import *
 
-# read data
+# read preprocessed data
 train_data_half_aug=read_data("../../mnist/mnist_train/mnist_train_cc1.0_data")
 test_data_half_aug=read_data("../../mnist/mnist_test/mnist_test_cc1.0_data")
 train_data_aug=read_data("../../mnist/mnist_train/mnist_train_cc1.0_crop45_data")
