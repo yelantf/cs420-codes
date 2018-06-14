@@ -6,7 +6,7 @@ Classification on modified MNIST dataset
 - [Pillow](https://github.com/python-pillow/Pillow)
 - [Matplotlib](https://github.com/matplotlib/matplotlib)
 - [scikit-learn](http://scikit-learn.org/stable/index.html)
-- [PyTorch](https://github.com/pytorch/pytorch) [0.4]
+- [PyTorch](https://github.com/pytorch/pytorch)==0.4.0
 
 ## Prepare Data
 Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them to [mnist](./mnist) folder, the folder structure should look like this:
@@ -14,9 +14,6 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
     ---- mnist/
         ---- mnist_train/
         ---- mnist_test/
-
-## Usage
-To train a deep model, 
 
 ## Traditonal Methods
 
@@ -27,6 +24,20 @@ To train a deep model,
 | Shift CC to center | 75.90% | 92.69% | 98.46% | 97.55% | 96.85%|
 
 ## Deep Learning Methods
+In this section, we implement FC and CNN baselines for classification. Three methods are proposed to improve the performance:
+
+- **PointNet**
+- **SegNet**
+- **LocNet**
+
+### Usage
+
+Each model is in a seperate folder in [deep_learning_methods](./deep_learning_methods). To train a model, please go into the corresponding folder and run `train_xxx.py`. For example, to train a baseline CNN model, you can do as follows:
+
+```python
+cd deep_learning_methods/CNN_baseline/
+python train_cnn.py
+```
 
 ### Deep Model Performance
 
