@@ -1,3 +1,10 @@
+'''
+    MNIST training with LocNet models
+
+    Author: Chenxi Wang
+    Date: June 2018
+'''
+
 from __future__ import print_function
 import argparse
 import numpy as np
@@ -8,15 +15,15 @@ import torch.optim as optim
 import torch_util
 from torchvision import datasets, transforms
 
+## get mnist dataset filename
+#  original datasets
 TRAIN_FILE = 'mnist_train_data'
 TEST_FILE = 'mnist_test_data'
-TRAIN_FILE_CC = 'mnist_train_cc1.0_data'
-TEST_FILE_CC = 'mnist_test_cc1.0_data'
+#  digit centering datasets
 TRAIN_FILE_CC_CENTERED = 'mnist_train_cc1.0_crop45_data'
 TEST_FILE_CC_CENTERED = 'mnist_test_cc1.0_crop45_data'
 
-BEST_ACC = 0.0
-MIN_LOSS = 100.0
+MIN_DIST = 100.0
 EPOCH_CNT = 0
 
 # Training settings
@@ -41,7 +48,7 @@ args = parser.parse_args()
 
 
 class myMNIST(torch.utils.data.Dataset):
-
+    ''' pytorch dataset class, used for load and get data'''
     def __init__(self, datapath, cls_labelpath, loc_labelpath):
         data = np.fromfile(datapath,dtype=np.uint8).reshape(-1,1,45,45)
         cls_label = np.fromfile(cls_labelpath,dtype=np.uint8)
@@ -58,6 +65,7 @@ class myMNIST(torch.utils.data.Dataset):
         else:
             data = np.zeros((3,45,45),dtype=np.float32)
             data[0,:,:] = self.data[index,...]
+            # data format convertion, add two channels [normed (x,y)]
             for i in range(45):
                 for j in range(45):
                     data[1,j,i] = i / 45.0
@@ -69,9 +77,10 @@ class myMNIST(torch.utils.data.Dataset):
         return self.data.shape[0]
 
 
-class TinyYolo(nn.Module):
+class LocNet(nn.Module):
+    '''LocNet implementation'''
     def __init__(self):
-        super(TinyYolo, self).__init__()
+        super(LocNet, self).__init__()
         self.conv1 = torch_util.conv2d(3, 16, kernel_size=4)
         self.conv2 = torch_util.conv2d(16, 64, kernel_size=3)
         self.conv3 = torch_util.conv2d(64, 256, kernel_size=3)
@@ -96,15 +105,20 @@ class TinyYolo(nn.Module):
 
 
 def train_one_epoch(args, model, device, train_loader, optimizer, epoch):
+    ''' train the model in one epoch'''
     model.train()
     for batch_idx, (data, cls_target, loc_target) in enumerate(train_loader):
+        # get data
         data, cls_target, loc_target = data.to(device), cls_target.to(device), loc_target.to(device)
         optimizer.zero_grad()
+        # get prediction and loss (only loc loss)
         loc_pred = model(data)
         loc_loss = F.mse_loss(loc_pred, loc_target/45.0)
         loss = loc_loss
+        # update weights
         loss.backward()
         optimizer.step()
+        # log training loss
         if batch_idx % args.log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
@@ -112,31 +126,27 @@ def train_one_epoch(args, model, device, train_loader, optimizer, epoch):
 
 
 def test_one_epoch(args, model, device, test_loader):
-    global BEST_ACC, MIN_LOSS
+    ''' test the model in one epoch'''
+    global MIN_DIST
     model.eval()
-    test_loss = 0
+    test_dist = 0
     img_cnt = 0
-    correct = 0
     with torch.no_grad():
         for data, cls_target, loc_target in test_loader:
+            # get data
             data, cls_target, loc_target = data.to(device), cls_target.to(device), loc_target.to(device)
+            # get prediction and box distance 
             loc_pred = model(data)
-            img_cnt = save_pred(img_cnt, loc_pred, loc_target)
-            test_loss += F.mse_loss(loc_pred*45, loc_target, size_average=False).item() # sum up batch loss
-            # loc_pred = loc_pred.max(1, keepdim=True)[1] # get the index of the max log-probability
-            # correct += loc_pred.eq(loc.view_as(loc_pred)).sum().item()
-
-    test_loss /= (4*len(test_loader.dataset))
-    # test_acc = 100. * correct / len(test_loader.dataset)
-    # BEST_ACC = max(test_acc, BEST_ACC)
-    MIN_LOSS = min(MIN_LOSS,test_loss)
-    # print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.2f}%)\n'.format(
-    #     test_loss, correct, len(test_loader.dataset),
-    #     test_acc))
-    print('\nTest set: Average loss: {:.4f}\n'.format(test_loss))
+            '''img_cnt = save_pred(img_cnt, loc_pred, loc_target)'''
+            test_dist += F.mse_loss(loc_pred*45, loc_target, size_average=False).item() # sum up batch loss
+    # get mean loss and box dist, log results
+    test_dist /= (4*len(test_loader.dataset))
+    MIN_DIST = min(MIN_DIST,test_dist)
+    print('\nTest set: Average box dist: {:.4f}\n'.format(test_dist))
 
 
 def save_pred(img_cnt, loc_pred, loc_label):
+    ''' save box prediction, used for visualization'''
     pred = (loc_pred*45)
     pred_label = np.concatenate([pred,loc_label],axis=-1)
     for idx in range(pred.shape[0]):
@@ -147,30 +157,30 @@ def save_pred(img_cnt, loc_pred, loc_label):
 
 def main():
     global EPOCH_CNT
+    # get device
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     torch.manual_seed(args.seed)
     device = torch.device("cuda" if use_cuda else "cpu")
-
-    model = TinyYolo().to(device)
+    # get model and optimizer
+    model = LocNet().to(device)
     optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
-
+    # get data loader
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
     train_loader = torch.utils.data.DataLoader(
-        myMNIST(datapath='./mnist/mnist_train/'+TRAIN_FILE_CC,
-                cls_labelpath='./mnist/mnist_train/mnist_train_label',
-                loc_labelpath='./mnist/mnist_train/mnist_train_cc1.0_loc'),
+        myMNIST(datapath='../../mnist/mnist_train/'+TRAIN_FILE,
+                cls_labelpath='../../mnist/mnist_train/mnist_train_label',
+                loc_labelpath='../../mnist/mnist_train/mnist_train_cc1.0_loc'),
         batch_size=args.batch_size, shuffle=True, **kwargs)
     test_loader = torch.utils.data.DataLoader(
-        myMNIST(datapath='./mnist/mnist_test/'+TEST_FILE_CC,
-                cls_labelpath='./mnist/mnist_test/mnist_test_label',
-                loc_labelpath='./mnist/mnist_test/mnist_test_cc1.0_loc'),
+        myMNIST(datapath='../../mnist/mnist_test/'+TEST_FILE,
+                cls_labelpath='../../mnist/mnist_test/mnist_test_label',
+                loc_labelpath='../../mnist/mnist_test/mnist_test_cc1.0_loc'),
         batch_size=args.batch_size, shuffle=False, **kwargs)
-
+    # train model
     for epoch in range(1, args.epochs + 1):
         train_one_epoch(args, model, device, train_loader, optimizer, epoch)
         test_one_epoch(args, model, device, test_loader)
         EPOCH_CNT += 1
-    print('Best accuracy: %.2f%%' % BEST_ACC)
 
 if __name__ == '__main__':
     main()

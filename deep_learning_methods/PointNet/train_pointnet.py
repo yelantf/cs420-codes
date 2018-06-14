@@ -1,3 +1,9 @@
+'''
+    MNIST training with PointNet (no input T-Net)
+
+    Author: Chenxi Wang
+    Date: June 2018
+'''
 from __future__ import print_function
 import argparse
 import numpy as np
@@ -9,10 +15,14 @@ import torch.optim as optim
 import torch_util
 from torchvision import datasets, transforms
 
+## get mnist dataset filename
+#  original datasets
 TRAIN_FILE = 'mnist_train_data'
 TEST_FILE = 'mnist_test_data'
+#  denoised datasets
 TRAIN_FILE_CC = 'mnist_train_cc1.0_data'
 TEST_FILE_CC = 'mnist_test_cc1.0_data'
+#  digit centering datasets
 TRAIN_FILE_CC_CENTERED = 'mnist_train_cc1.0_crop45_data'
 TEST_FILE_CC_CENTERED = 'mnist_test_cc1.0_crop45_data'
 
@@ -39,20 +49,8 @@ parser.add_argument('--log-interval', type=int, default=100, metavar='N',
 args = parser.parse_args()
 
 
-def sample_points(points, n=256):
-    num_point = points.shape[0]
-    data = points.copy()
-    if num_point<n:
-        idx1 = np.arange(num_point)
-        idx2 = np.random.choice(num_point,n-num_point,replace=True)
-        idx = np.concatenate([idx1,idx2])
-    else:
-        idx = np.random.choice(num_point,n,replace=False)
-    return data[idx]
-
-
 class myMNIST(torch.utils.data.Dataset):
-
+    ''' pytorch dataset class, used for load and get data'''
     def __init__(self, datapath, labelpath):
         data = np.fromfile(datapath,dtype=np.uint8).reshape(-1,45,45)
         label = np.fromfile(labelpath,dtype=np.uint8)
@@ -61,27 +59,26 @@ class myMNIST(torch.utils.data.Dataset):
         self.cache = {}
 
     def __getitem__(self, index):
-        if index in self.cache:
-            xyg, label = self.cache[index]
-            xyg = sample_points(xyg,n=128)
-            return xyg, label
-        else:
+        if index not in self.cache:
             tmp_data = self.data[index,...]
-            xyg = np.zeros((45*45,3),dtype=np.float32)
+            gxy = np.zeros((45*45,3),dtype=np.float32)
+            # data format convertion
+            # from image matrix to point sets (g,x,y)
             for i in range(45):
                 for j in range(45):
-                    xyg[i*45+j] = [i/44.,j/44.,tmp_data[j,i]]
-            xyg = xyg[xyg[:,2]>0]
-            self.cache[index] = (xyg, self.label[index])
-            xyg = sample_points(xyg,n=128)
-            return xyg, self.label[index]
+                    gxy[i*45+j] = [i/44.,j/44.,tmp_data[j,i]]
+            self.cache[index] = (gxy, self.label[index])
+        return self.cache[index]
 
     def __len__(self):
-        return self.label.shape[0]
+        return self.data.shape[0]
 
 
 class feature_transform_net(nn.Module):
-
+    '''
+        Feature T-Net implementation
+        Sub model to PointNet
+    '''
     def __init__(self, in_channels, momentum, num_point, batch_size):
         super(feature_transform_net, self).__init__()
         self.batch_size = batch_size
@@ -91,7 +88,7 @@ class feature_transform_net(nn.Module):
         self.maxpool = nn.MaxPool2d((num_point, 1))
         self.fc1 = torch_util.fully_connected(1024, 512)
         self.fc2 = torch_util.fully_connected(512, 256)
-        self.fc3 = torch_util.fully_connected(256, 64*64)
+        self.fc3 = nn.Linear(256, 64*64)
 
     def forward(self, x):
         x = self.conv1(x)
@@ -109,7 +106,7 @@ class feature_transform_net(nn.Module):
 
 
 class PointNet(nn.Module):
-
+    '''PointNet implementation (no input T-Net)'''
     def __init__(self, num_point, batch_size, momentum=0.1):
         super(PointNet, self).__init__()
         self.conv1 = torch_util.conv2d(in_channels=1, out_channels=64, kernel_size=(1,3), momentum=momentum)
@@ -120,8 +117,7 @@ class PointNet(nn.Module):
         self.fc1 = torch_util.fully_connected(1024, 512)
         self.fc2 = torch_util.fully_connected(512, 256)
         self.fc3 = nn.Linear(256, 10)
-        # self.input_transform = input_transform_net(in_channels=1, momentum=momentum, num_point=num_point, batch_size=batch_size)
-        # self.feature_transform = feature_transform_net(in_channels=64, momentum=momentum, num_point=num_point, batch_size=batch_size)
+        self.feature_transform = feature_transform_net(in_channels=64, momentum=momentum, num_point=num_point, batch_size=batch_size)
         self.maxpool = nn.MaxPool2d((num_point, 1))
         self.relu = nn.ReLU()
         self.drop1 = nn.Dropout(p=0.7)
@@ -129,14 +125,11 @@ class PointNet(nn.Module):
 
     def forward(self, point_cloud):
         net = point_cloud.unsqueeze(1)
-        # input_trans = self.input_transform(net)
-        # self.end_points['input_trans'] = input_trans
-        # net = torch.bmm(point_cloud, input_trans).unsqueeze(1)
         net = self.conv1(net)
         net = self.conv2(net)
-        # feat_trans = self.feature_transform(net)
-        # net = torch.bmm(torch.squeeze(net).transpose(1,2), feat_trans)
-        # net = net.transpose(1,2).unsqueeze(-1)
+        feat_trans = self.feature_transform(net)
+        net = torch.bmm(torch.squeeze(net).transpose(1,2), feat_trans)
+        net = net.transpose(1,2).unsqueeze(-1)
         net = self.conv3(net)
         net = self.conv4(net)
         net = self.conv5(net)
@@ -148,15 +141,21 @@ class PointNet(nn.Module):
         net = self.fc3(net)
         return F.log_softmax(net, dim=1)
 
+
 def train_one_epoch(args, model, device, train_loader, optimizer, epoch):
+    ''' train the model in one epoch'''
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
+        # get data
         data, target = data.to(device), target.to(device)
         optimizer.zero_grad()
+        # get prediction and loss
         output = model(data)
         loss = F.nll_loss(output, target)
+        # update weights
         loss.backward()
         optimizer.step()
+        # log training loss
         if batch_idx % args.log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
@@ -164,18 +163,21 @@ def train_one_epoch(args, model, device, train_loader, optimizer, epoch):
 
 
 def test_one_epoch(args, model, device, test_loader):
+    ''' test the model in one epoch'''
     global BEST_ACC
     model.eval()
     test_loss = 0
     correct = 0
     with torch.no_grad():
         for data, target in test_loader:
+            # get data
             data, target = data.to(device), target.to(device)
+            # get prediction and loss
             output = model(data)
             test_loss += F.nll_loss(output, target, size_average=False).item() # sum up batch loss
             pred = output.max(1, keepdim=True)[1] # get the index of the max log-probability
             correct += pred.eq(target.view_as(pred)).sum().item()
-
+    # get mean loss and acc, log results
     test_loss /= len(test_loader.dataset)
     test_acc = 100. * correct / len(test_loader.dataset)
     BEST_ACC = max(test_acc, BEST_ACC)
@@ -185,23 +187,24 @@ def test_one_epoch(args, model, device, test_loader):
 
 
 def main():
+    # get device
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     torch.manual_seed(args.seed)
     device = torch.device("cuda" if use_cuda else "cpu")
-
+    # get model and optimizer
     model = PointNet(128,64).to(device)
     optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
-
+    # get data loader
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
     train_loader = torch.utils.data.DataLoader(
-        myMNIST(datapath='./mnist/mnist_train/'+TRAIN_FILE_CC,
-                labelpath='./mnist/mnist_train/mnist_train_label'),
+        myMNIST(datapath='../../mnist/mnist_train/'+TRAIN_FILE_CC,
+                labelpath='../../mnist/mnist_train/mnist_train_label'),
         batch_size=args.batch_size, shuffle=True, **kwargs)
     test_loader = torch.utils.data.DataLoader(
-        myMNIST(datapath='./mnist/mnist_test/'+TEST_FILE_CC,
-                labelpath='./mnist/mnist_test/mnist_test_label'),
-        batch_size=args.batch_size, shuffle=True, **kwargs)
-
+        myMNIST(datapath='../../mnist/mnist_test/'+TEST_FILE_CC,
+                labelpath='../../mnist/mnist_test/mnist_test_label'),
+        batch_size=args.batch_size, shuffle=False, **kwargs)
+    # train model
     for epoch in range(1, args.epochs + 1):
         train_one_epoch(args, model, device, train_loader, optimizer, epoch)
         test_one_epoch(args, model, device, test_loader)

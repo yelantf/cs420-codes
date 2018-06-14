@@ -1,3 +1,10 @@
+'''
+    MNIST training with FC baseline models
+
+    Author: Chenxi Wang
+    Date: June 2018
+'''
+
 from __future__ import print_function
 import argparse
 import numpy as np
@@ -8,10 +15,14 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 import torch_util
 
+## get mnist dataset filename
+#  original datasets
 TRAIN_FILE = 'mnist_train_data'
 TEST_FILE = 'mnist_test_data'
+#  denoised datasets
 TRAIN_FILE_CC = 'mnist_train_cc1.0_data'
 TEST_FILE_CC = 'mnist_test_cc1.0_data'
+#  digit centering datasets
 TRAIN_FILE_CC_CENTERED = 'mnist_train_cc1.0_crop45_data'
 TEST_FILE_CC_CENTERED = 'mnist_test_cc1.0_crop45_data'
 
@@ -39,7 +50,7 @@ args = parser.parse_args()
 
 
 class myMNIST(torch.utils.data.Dataset):
-
+    ''' pytorch dataset class, used for load and get data'''
     def __init__(self, datapath, labelpath):
         data = np.fromfile(datapath,dtype=np.uint8).reshape(-1,1,45,45)
         label = np.fromfile(labelpath,dtype=np.uint8)
@@ -50,12 +61,13 @@ class myMNIST(torch.utils.data.Dataset):
         return self.data[index,...], self.label[index]
 
     def __len__(self):
-        return self.label.shape[0]
+        return self.data.shape[0]
 
 
-class NN(nn.Module):
+class FC(nn.Module):
+    '''FC baseline implementation'''
     def __init__(self):
-        super(NN, self).__init__()
+        super(FC, self).__init__()
         self.fc1 = nn.Linear(45*45, 1024)
         self.fc2 = nn.Linear(1024, 256)
         self.fc3 = nn.Linear(256, 64)
@@ -74,14 +86,19 @@ class NN(nn.Module):
 
 
 def train_one_epoch(args, model, device, train_loader, optimizer, epoch):
+    ''' train the model in one epoch'''
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
+        # get data
         data, target = data.to(device), target.to(device)
         optimizer.zero_grad()
+        # get prediction and loss
         output = model(data)
         loss = F.nll_loss(output, target)
+        # update weights
         loss.backward()
         optimizer.step()
+        # log training loss
         if batch_idx % args.log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
@@ -89,18 +106,21 @@ def train_one_epoch(args, model, device, train_loader, optimizer, epoch):
 
 
 def test_one_epoch(args, model, device, test_loader):
+    ''' test the model in one epoch'''
     global BEST_ACC
     model.eval()
     test_loss = 0
     correct = 0
     with torch.no_grad():
         for data, target in test_loader:
+            # get data
             data, target = data.to(device), target.to(device)
+            # get prediction and loss
             output = model(data)
             test_loss += F.nll_loss(output, target, size_average=False).item() # sum up batch loss
             pred = output.max(1, keepdim=True)[1] # get the index of the max log-probability
             correct += pred.eq(target.view_as(pred)).sum().item()
-
+    # get mean loss and acc, log results
     test_loss /= len(test_loader.dataset)
     test_acc = 100. * correct / len(test_loader.dataset)
     BEST_ACC = max(BEST_ACC, test_acc)
@@ -110,23 +130,24 @@ def test_one_epoch(args, model, device, test_loader):
 
 
 def main():
+    # get device
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     torch.manual_seed(args.seed)
     device = torch.device("cuda" if use_cuda else "cpu")
-
-    model = NN().to(device)
+    # get model and optimizer
+    model = FC().to(device)
     optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
-
+    # get data loader
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
     train_loader = torch.utils.data.DataLoader(
-        myMNIST(datapath='./mnist/mnist_train/'+TRAIN_FILE_CC,
-                labelpath='./mnist/mnist_train/mnist_train_label'),
+        myMNIST(datapath='../../mnist/mnist_train/'+TRAIN_FILE_CC,
+                labelpath='../../mnist/mnist_train/mnist_train_label'),
         batch_size=args.batch_size, shuffle=True, **kwargs)
     test_loader = torch.utils.data.DataLoader(
-        myMNIST(datapath='./mnist/mnist_test/'+TEST_FILE_CC,
-                labelpath='./mnist/mnist_test/mnist_test_label'),
-        batch_size=args.batch_size, shuffle=True, **kwargs)
-
+        myMNIST(datapath='../../mnist/mnist_test/'+TEST_FILE_CC,
+                labelpath='../../mnist/mnist_test/mnist_test_label'),
+        batch_size=args.batch_size, shuffle=False, **kwargs)
+    # train model
     for epoch in range(1, args.epochs + 1):
         train_one_epoch(args, model, device, train_loader, optimizer, epoch)
         test_one_epoch(args, model, device, test_loader)
