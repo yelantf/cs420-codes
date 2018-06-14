@@ -19,4 +19,10 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
 
 ## Deep Learning Methods
 
-## 
+### SegNet Result Visualization
+
+![](./deep_learning_methods/img/segnet_vis.png)
+
+### LocNet Result Visualization
+
+![](./deep_learning_methods/img/locnet_vis.png)
