@@ -3,10 +3,10 @@ Classification on modified MNIST dataset
 
 ## Contents
 
-* [Requirements](#Requirements)
-* [Prepare Data](#Prepare-Data)
-* [Traditonal Methods](#Traditonal-Methods)
-* [Deep Learning Methods](#Deep-Learning-Methods)
+- [Requirements](#Requirements)
+- [Prepare Data](#Prepare-Data)
+- [Traditonal Methods](#Traditonal-Methods)
+- [Deep Learning Methods](#Deep-Learning-Methods)
 
 ## Requirements
 - [NumPy](https://github.com/numpy/numpy)
@@ -43,7 +43,7 @@ In this section, we implement FC and CNN baselines for classification. Three met
 
 Each model is in a seperate folder in [deep_learning_methods/](./deep_learning_methods). To train a model, please go into the corresponding folder and run `train_xxx.py`. For example, to train a baseline CNN model, you can do as follows:
 
-```python
+```bash
 cd deep_learning_methods/CNN_baseline/
 python train_cnn.py
 ```
@@ -69,3 +69,8 @@ ___note___: ``CC'' stands for connected components.
 <div align=center>
 <img src="./img/locnet_vis.png" width="600" />
 </div>
+
+## Team Member
+
+- [Jiajun Tang](https://github.com/yelantingfeng)
+- [Chenxi Wang](https://github.com/chenxi-wang)
