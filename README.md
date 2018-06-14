@@ -7,3 +7,16 @@ Classification on modified MNIST dataset
 - [Matplotlib](https://github.com/matplotlib/matplotlib)
 - [scikit-learn](http://scikit-learn.org/stable/index.html)
 - [PyTorch](https://github.com/pytorch/pytorch) [0.4]
+
+## Prepare Data
+Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them to [mnist](./mnist) folder, the folder structure shou look like this:
+
+    ---- mnist/
+        ---- mnist_train/
+        ---- mnist_test/
+
+## Tratditonal Methods
+
+## Deep Learning Method
+
+## 
