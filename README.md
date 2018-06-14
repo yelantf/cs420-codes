@@ -18,6 +18,7 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
 ## Tratditonal Methods
 
 ## Deep Convolutional Neural Networks
+
 |  | Naive Bayes | Desision Tree | Random Forest | K-Nearest Neighbor | SVM |
 | :----: |:------------:| :----: |:------------:| :-: | :-: |
 | Target dataset | 18.81% | 50.94% | 87.61% | 88.63% | 87.07% |
@@ -29,11 +30,17 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
 ### SegNet Result Visualization
 
 <div align=center>
+
 <img src="./deep_learning_methods/img/segnet_vis.png" width="600" />
+
+![](./deep_learning_methods/img/segnet_vis.png)
+
 </div>
 
 ### LocNet Result Visualization
 
 <div align=center>
-<img src="./deep_learning_methods/img/locnet_vis.png" width="600" />
+
+![](./deep_learning_methods/img/locnet_vis.png)
+
 </div>
