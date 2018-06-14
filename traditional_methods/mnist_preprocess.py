@@ -83,6 +83,8 @@ def crop_center(datafile,newfig_w=45):
             padtup=((0,0),(pad_pre,pad_post))
             newimg=np.pad(newimg,padtup,'constant')
         newdata[ind]=newimg
+    
+    # save data
     strlst=datafile.split('_')
     strlst.insert(-1,"crop{}".format(newfig_w))
     newdatafile='_'.join(strlst)
@@ -90,11 +92,16 @@ def crop_center(datafile,newfig_w=45):
     return newdatafile
 
 def location_data(datafile):
+    # read data
     data=np.fromfile(datafile,dtype=np.uint8)
     fig_w=45
     data=data.reshape(-1,fig_w,fig_w)
     data_num=data.shape[0]
+
+    # empty data
     newdata=np.zeros([data_num,4],dtype=np.float32)
+
+    # get location of largest cc in each image
     for ind in xrange(data_num):
         imgdata=data[ind]
         M,N=np.where(imgdata>0)
