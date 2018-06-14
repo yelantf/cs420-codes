@@ -30,6 +30,8 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
 | Keep largest CC | 19.73% | 55.54% | 89.07% | 88.73% |88.29%|
 | Shift CC to center | 75.90% | 92.69% | 98.46% | 97.55% | 96.85%|
 
+___note___: ``CC'' stands for connected components.
+
 ## Deep Learning Methods
 In this section, we implement FC and CNN baselines for classification. Three methods are proposed to improve the performance:
 
