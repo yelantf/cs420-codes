@@ -15,6 +15,9 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
         ---- mnist_train/
         ---- mnist_test/
 
+## Usage
+To train a deep model, 
+
 ## Traditonal Methods
 
 |  | Naive Bayes | Desision Tree | Random Forest | K-Nearest Neighbor | SVM |
@@ -32,6 +35,7 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
 |FC|90.11|92.46|92.78|99.03|**99.28**|
 |CNN|99.47|99.31|99.40|99.88|**99.90**|
 |PointNet|91.02|
+___note___: ``CC'' stands for connected components.
 
 ### SegNet Result Visualization
 
