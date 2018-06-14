@@ -1,7 +1,6 @@
 # CS420 Machine Learning, Final Project
 
 ## Requirements
----
 - [NumPy](https://github.com/numpy/numpy)
 - [Pillow](https://github.com/python-pillow/Pillow)
 - [Matplotlib](https://github.com/matplotlib/matplotlib)
