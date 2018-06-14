@@ -17,8 +17,6 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
 
 ## Tratditonal Methods
 
-## Deep Convolutional Neural Networks
-
 |  | Naive Bayes | Desision Tree | Random Forest | K-Nearest Neighbor | SVM |
 | :----: |:------------:| :----: |:------------:| :-: | :-: |
 | Target dataset | 18.81% | 50.94% | 87.61% | 88.63% | 87.07% |
