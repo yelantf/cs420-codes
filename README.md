@@ -28,21 +28,21 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
 ### Naive Bayes
 
 ```shell
-cd traditional_methods/NaiveBayes/;
+cd traditional_methods/NaiveBayes/
 python Bayes.py
 ```
 
 ### Decision Tree
 
 ```shell
-cd traditional_methods/DecisionTree/;
+cd traditional_methods/DecisionTree/
 python Tree.py
 ```
 
 ### Random Forest
 
 ```shell
-cd traditional_methods/RandomForest/;
+cd traditional_methods/RandomForest/
 python ForestBestN.py
 ```
 
@@ -55,20 +55,20 @@ These commands will output the performance of random forest with different numbe
 ### K-Nearest Neighbors
 
 ```shell
-cd traditional_methods/KNN/;
+cd traditional_methods/KNN/
 python KNNBestK.py
 ```
 
 These commands will output the performance of KNN with different K, demonstrated by the following figure.
 
-<figure>
+<div align="center">
     <img src="img/k-accu.png" width="600">
-</figure> 
+</div> 
 
 ### Support Vector Machine
 
 ```shell
-cd traditional_methods/SVM/;
+cd traditional_methods/SVM/
 python SVMBestDim.py
 ```
 
@@ -80,7 +80,7 @@ following two figures.
 </div>
 
 ```shell
-cd traditional_methods/SVM/;
+cd traditional_methods/SVM/
 python SVMBestKernel.py
 ```
 
