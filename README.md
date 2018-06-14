@@ -3,10 +3,11 @@ Classification on modified MNIST dataset
 
 ## Contents
 
-- [Requirements](#Requirements)
-- [Prepare Data](#Prepare-Data)
-- [Traditonal Methods](#Traditonal-Methods)
-- [Deep Learning Methods](#Deep-Learning-Methods)
+- [Requirements](#requirements)
+- [Prepare Data](#prepare-data)
+- [Traditonal Methods](#traditonal-methods)
+- [Deep Learning Methods](#deep-learning-methods)
+- [Team Member](#team-member)
 
 ## Requirements
 - [NumPy](https://github.com/numpy/numpy)
