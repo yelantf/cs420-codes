@@ -103,30 +103,35 @@ def location_data(datafile):
 
     # get location of largest cc in each image
     for ind in xrange(data_num):
+        # find the bounding box of largest cc
         imgdata=data[ind]
         M,N=np.where(imgdata>0)
         top,bot=M.min(),M.max()
         left,right=N.min(),N.max()
+
+        # calculate center point, width and height
         newdata[ind][0]=(left+right)/2.0
         newdata[ind][1]=(top+bot)/2.0
         newdata[ind][2]=right-left+1
         newdata[ind][3]=bot-top+1
+
+    # save data
     strlst=datafile.split('_')
     strlst[-1]="loc"
     newdatafile='_'.join(strlst)
     newdata.ravel().tofile(newdatafile)
     return newdatafile
 
+# preprocess training sets
 traindata="mnist/mnist_train/mnist_train_data"
 newtrain=largest_cc(traindata)
 crop_center(newtrain)
+location_data(newtrain)
 
+# preprocess testing sets
 testdata="mnist/mnist_test/mnist_test_data"
 newtest=largest_cc(testdata)
 crop_center(newtest)
-
-location_data(newtrain)
-
 location_data(newtest)
 
 
