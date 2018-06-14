@@ -22,17 +22,11 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
 ### SegNet Result Visualization
 
 <div align=center>
-
 <img src="./deep_learning_methods/img/segnet_vis.png" width="600" />
-
-![](./deep_learning_methods/img/segnet_vis.png)
-
 </div>
 
 ### LocNet Result Visualization
 
 <div align=center>
-
-![](./deep_learning_methods/img/locnet_vis.png)
-
+<img src="./deep_learning_methods/img/locnet_vis.png" width="600" />
 </div>
