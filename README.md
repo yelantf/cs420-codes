@@ -1,8 +1,6 @@
 # CS420 Machine Learning, Final Project
 Classification on modified MNIST dataset
 
-[toc]
-
 ## Requirements
 - [NumPy](https://github.com/numpy/numpy)
 - [Pillow](https://github.com/python-pillow/Pillow)
@@ -28,4 +26,20 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
 
 ## Deep Learning Methods
 
-## 
+### SegNet Result Visualization
+
+<div align=center>
+
+<img src="./deep_learning_methods/img/segnet_vis.png" width="600" />
+
+![](./deep_learning_methods/img/segnet_vis.png)
+
+</div>
+
+### LocNet Result Visualization
+
+<div align=center>
+
+![](./deep_learning_methods/img/locnet_vis.png)
+
+</div>
