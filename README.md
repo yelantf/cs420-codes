@@ -19,6 +19,16 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
 
 ## Deep Learning Methods
 
+### Deep Model Performance
+
+|Model|Accuracy|Model|Accuracy|
+|:---|---|:---|---|
+|FC|90.11|CNN|99.47|
+|FC+Largest CC| 92.46|CNN+Largest CC|99.31|
+|FC+SegNet| 92.78|CNN+SegNet|99.40|
+|FC+CC Centralization|99.03|CNN+CC Centralization|99.88|
+|FC+LocNet|**99.28**|CNN+LocNet|**99.90**|
+
 ### SegNet Result Visualization
 
 <div align=center>
