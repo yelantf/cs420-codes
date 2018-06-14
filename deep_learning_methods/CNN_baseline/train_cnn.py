@@ -1,5 +1,5 @@
 '''
-    mnist training with cnn baseline models
+    MNIST training with CNN baseline models
 
     Author: Chenxi Wang
     Date: June 2018
@@ -61,7 +61,7 @@ class myMNIST(torch.utils.data.Dataset):
         return self.data[index,...], self.label[index]
 
     def __len__(self):
-        return self.label.shape[0]
+        return self.data.shape[0]
 
 
 class CNN(nn.Module):
@@ -112,14 +112,16 @@ def train_one_epoch(args, model, device, train_loader, optimizer, epoch):
 
 
 def test_one_epoch(args, model, device, test_loader):
-    ''' train the model in one epoch'''
+    ''' test the model in one epoch'''
     global BEST_ACC
     model.eval()
     test_loss = 0
     correct = 0
     with torch.no_grad():
         for data, target in test_loader:
+            # get data
             data, target = data.to(device), target.to(device)
+            # get prediction and loss
             output = model(data)
             test_loss += F.nll_loss(output, target, size_average=False).item() # sum up batch loss
             pred = output.max(1, keepdim=True)[1] # get the index of the max log-probability
@@ -134,11 +136,11 @@ def test_one_epoch(args, model, device, test_loader):
 
 
 def main():
-    # set device
+    # get device
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     torch.manual_seed(args.seed)
     device = torch.device("cuda" if use_cuda else "cpu")
-    # set model and optimizer
+    # get model and optimizer
     model = CNN().to(device)
     optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     # get data loader
@@ -151,7 +153,7 @@ def main():
         myMNIST(datapath='../../mnist/mnist_test/'+TEST_FILE_CC_CENTERED,
                 labelpath='../../mnist/mnist_test/mnist_test_label'),
         batch_size=args.batch_size, shuffle=True, **kwargs)
-    # train models
+    # train model
     for epoch in range(1, args.epochs + 1):
         train_one_epoch(args, model, device, train_loader, optimizer, epoch)
         test_one_epoch(args, model, device, test_loader)
