@@ -1,8 +1,6 @@
 # CS420 Machine Learning, Final Project
 Classification on modified MNIST dataset
 
-[toc]
-
 ## Requirements
 - [NumPy](https://github.com/numpy/numpy)
 - [Pillow](https://github.com/python-pillow/Pillow)
