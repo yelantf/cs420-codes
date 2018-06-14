@@ -2,9 +2,9 @@
 Classification on modified MNIST dataset
 
 * [Requirements](#Requirements)
-* [Prepare Data](#Prepare Data)
-* [Traditonal Methods](#Traditonal Methods)
-* [Deep Learning Methods](#Deep Learning Methods)
+* [Prepare Data](#Prepare-Data)
+* [Traditonal Methods](#Traditonal-Methods)
+* [Deep Learning Methods](#Deep-Learning-Methods)
 
 ## Requirements
 - [NumPy](https://github.com/numpy/numpy)
