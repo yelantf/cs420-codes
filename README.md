@@ -1,6 +1,8 @@
 # CS420 Machine Learning, Final Project
 Classification on modified MNIST dataset
 
+## Contents
+
 * [Requirements](#Requirements)
 * [Prepare Data](#Prepare-Data)
 * [Traditonal Methods](#Traditonal-Methods)
