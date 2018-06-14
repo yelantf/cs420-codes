@@ -17,6 +17,74 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
 
 ## Tratditonal Methods
 
+### Naive Bayes
+
+```shell
+cd traditional_methods/NaiveBayes/;
+python Bayes.py
+```
+
+### Decision Tree
+
+```shell
+cd traditional_methods/DecisionTree/;
+python Tree.py
+```
+
+### Random Forest
+
+```shell
+cd traditional_methods/RandomForest/;
+python ForestBestN.py
+```
+
+These commands will output the performance of random forest with different number of decision trees, demonstrated by the following two figures.
+
+<figure class="half">
+    <img src="img/forest-accu.png">
+    <img src="img/forest-runtime.png">
+</figure>
+
+### K-Nearest Neighbors
+
+```shell
+cd traditional_methods/KNN/;
+python KNNBestK.py
+```
+
+These commands will output the performance of KNN with different K, demonstrated by the following figure.
+
+<figure>
+    <img src="img/k-accu.png">
+</figure> 
+
+### Support Vector Machine
+
+```shell
+cd traditional_methods/SVM/;
+python SVMBestDim.py
+```
+
+These commands will output the performance of linear SVM on different dimension data reduced by PCA, demonstrated by the 
+following two figures.
+
+<figure class="half">
+    <img src="img/pca-accu.png">
+    <img src="img/pca-runtime.png">
+</figure>
+
+```shell
+cd traditional_methods/SVM/;
+python SVMBestKernel.py
+```
+
+These commands will output the performance of SVM with different kernels.
+
+### Influence of Modification
+
+For five traditional models above, running `*Preprocess.py` in their respective directory will give 
+the results as the following table shows.
+
 |  | Naive Bayes | Desision Tree | Random Forest | K-Nearest Neighbor | SVM |
 | :----: |:------------:| :----: |:------------:| :-: | :-: |
 | Target dataset | 18.81% | 50.94% | 87.61% | 88.63% | 87.07% |
