@@ -15,7 +15,7 @@ Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them t
         ---- mnist_train/
         ---- mnist_test/
 
-## Tratditonal Methods
+## Traditonal Methods
 
 |  | Naive Bayes | Desision Tree | Random Forest | K-Nearest Neighbor | SVM |
 | :----: |:------------:| :----: |:------------:| :-: | :-: |
