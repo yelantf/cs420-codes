@@ -2,9 +2,9 @@
 Classification on modified MNIST dataset
 
 * [Requirements](#Requirements)
-* [Prepare Data](#Prepare\ Data)
-* [Traditonal Methods](#Traditonal\ Methods)
-* [Deep Learning Methods](#Deep\ Learning\ Methods)
+* [Prepare Data](#Prepare Data)
+* [Traditonal Methods](#Traditonal Methods)
+* [Deep Learning Methods](#Deep Learning Methods)
 
 ## Requirements
 - [NumPy](https://github.com/numpy/numpy)
@@ -14,7 +14,7 @@ Classification on modified MNIST dataset
 - [PyTorch](https://github.com/pytorch/pytorch)==0.4.0
 
 ## Prepare Data
-Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them to [mnist](./mnist) folder, the folder structure should look like this:
+Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them to [mnist/](./mnist) folder, the folder structure should look like this:
 
     ---- mnist/
         ---- mnist_train/
@@ -37,7 +37,7 @@ In this section, we implement FC and CNN baselines for classification. Three met
 
 ### Usage
 
-Each model is in a seperate folder in [deep_learning_methods](./deep_learning_methods). To train a model, please go into the corresponding folder and run `train_xxx.py`. For example, to train a baseline CNN model, you can do as follows:
+Each model is in a seperate folder in [deep_learning_methods/](./deep_learning_methods). To train a model, please go into the corresponding folder and run `train_xxx.py`. For example, to train a baseline CNN model, you can do as follows:
 
 ```python
 cd deep_learning_methods/CNN_baseline/
