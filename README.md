@@ -47,10 +47,9 @@ python ForestBestN.py
 
 These commands will output the performance of random forest with different number of decision trees, demonstrated by the following two figures.
 
-<figure class="half">
-    <img src="img/forest-accu.png">
-    <img src="img/forest-runtime.png">
-</figure>
+<div align="center">
+<img src="img/forest-accu.png" height="250"> <img src="img/forest-runtime.png" height="250">
+</div>
 
 ### K-Nearest Neighbors
 
@@ -62,7 +61,7 @@ python KNNBestK.py
 These commands will output the performance of KNN with different K, demonstrated by the following figure.
 
 <figure>
-    <img src="img/k-accu.png">
+    <img src="img/k-accu.png" width="600">
 </figure> 
 
 ### Support Vector Machine
@@ -75,10 +74,9 @@ python SVMBestDim.py
 These commands will output the performance of linear SVM on different dimension data reduced by PCA, demonstrated by the 
 following two figures.
 
-<figure class="half">
-    <img src="img/pca-accu.png">
-    <img src="img/pca-runtime.png">
-</figure>
+<div align="center">
+<img src="img/pca-accu.png" height="250"> <img src="img/pca-runtime.png" height="250">
+</div>
 
 ```shell
 cd traditional_methods/SVM/;
