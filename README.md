@@ -13,7 +13,7 @@ Classification on modified MNIST dataset
 - [NumPy](https://github.com/numpy/numpy)
 - [Pillow](https://github.com/python-pillow/Pillow)
 - [Matplotlib](https://github.com/matplotlib/matplotlib)
-- [scikit-learn](http://scikit-learn.org/stable/index.html)
+- [scikit-learn](https://github.com/scikit-learn/scikit-learn)
 - [PyTorch](https://github.com/pytorch/pytorch)==0.4.0
 
 ## Prepare Data
