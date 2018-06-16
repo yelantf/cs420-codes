@@ -1,9 +1,10 @@
 # CS420 Machine Learning Final Project
-Classification on modified MNIST dataset
+Classification on modified MNIST dataset. Our **SegNet** achieves the accuracy of **99.90%**.
 
 ## Contents
 
 - [Requirements](#requirements)
+- [Model List](#model-list)
 - [Prepare Data](#prepare-data)
 - [Traditonal Methods](#traditonal-methods)
 - [Deep Learning Methods](#deep-learning-methods)
@@ -15,6 +16,21 @@ Classification on modified MNIST dataset
 - [Matplotlib](https://github.com/matplotlib/matplotlib)
 - [scikit-learn](https://github.com/scikit-learn/scikit-learn)
 - [PyTorch](https://github.com/pytorch/pytorch)==0.4.0
+
+## Model List
+
+    ---- Traditional Methods
+        ---- Naive Bayes (18.81%)
+        ---- Decision Tree (50.94%)
+        ---- Random Forest (87.61%)
+        ---- K-Nearest Neighbors (88.63%)
+        ---- Support Vector Machine (87.07%)
+    ---- Deep Learning Methods
+        ---- FC Baseline (90.11%)
+        ---- CNN Baseline (99.47%)
+        ---- PointNet (91.02%)
+        ---- SegNet (99.31%)
+        ---- LocNet (99.90%)
 
 ## Prepare Data
 Download datasets from [jbox](https://jbox.sjtu.edu.cn/l/VooiCd) and move them to [mnist/](./mnist) folder, the folder structure should look like this:
@@ -117,11 +133,11 @@ python train_cnn.py
 
 ### Deep Model Performance
 
-||Baseline|Largest CC|CC Centralization|SegNet|LocNet|
-|:---:|:---:|:---:|:---:|:---:|:---:|
-|FC|90.11%|92.46%|92.78%|99.03%|**99.28%**|
-|CNN|99.47%|99.31%|99.40%|99.88%|**99.90%**|
-|PointNet|91.02%|
+| | Baseline | Largest CC | CC Centralization | SegNet | LocNet |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| FC | 90.11% | 92.46% | 99.03% | 92.78% | **99.28%** |
+| CNN | 99.47% | 99.31% | 99.88% | 99.40% | **99.90%** |
+| PointNet | 91.02% |
 
 ___note___: ``CC'' stands for connected components.
 
