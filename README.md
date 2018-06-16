@@ -1,5 +1,5 @@
 # CS420 Machine Learning Final Project
-Classification on modified MNIST dataset. Our **SegNet** achieves the accuracy of **99.90%**.
+Classification on modified MNIST dataset. Our **LocNet** achieves the accuracy of **99.90%**.
 
 ## Contents
 
