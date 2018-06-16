@@ -29,7 +29,7 @@ Classification on modified MNIST dataset. Our **LocNet** achieves the accuracy o
         ---- FC Baseline (90.11%)
         ---- CNN Baseline (99.47%)
         ---- PointNet (91.02%)
-        ---- SegNet (99.31%)
+        ---- SegNet (99.40%)
         ---- LocNet (99.90%)
 
 ## Prepare Data
