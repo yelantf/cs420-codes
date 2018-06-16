@@ -113,7 +113,7 @@ the results as the following table shows.
 | Keep largest CC | 19.73% | 55.54% | 89.07% | 88.73% |88.29%|
 | Shift CC to center | 75.90% | 92.69% | 98.46% | 97.55% | 96.85%|
 
-___note___: ``CC'' stands for connected components.
+___note___: "CC" stands for connected components.
 
 ## Deep Learning Methods
 In this section, we implement FC and CNN baselines for classification. Three methods are proposed to improve the performance:
@@ -139,16 +139,18 @@ python train_cnn.py
 | CNN | 99.47% | 99.31% | 99.88% | 99.40% | **99.90%** |
 | PointNet | 91.02% |
 
-___note___: ``CC'' stands for connected components.
+___note___: "CC" stands for connected components.
 
-### SegNet Visualization
+### SegNet
+We propose **SegNet** to automatically denoise original images using neural networks. Improvements are significant on FC baseline.
 
 <div align=center>
 <img src="./img/segnet_model.png" width="600" />
 <img src="./img/segnet_vis.png" width="600" />
 </div>
 
-### LocNet Visualization
+### LocNet
+We propose **LocNet** to automatically Localize digits in original images by tight bounding boxs (BBox) using neural networks. Improvements are significant on both CNN and FC baselines.
 
 <div align=center>
 <img src="./img/locnet_model.png" width="600" />
