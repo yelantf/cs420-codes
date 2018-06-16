@@ -141,17 +141,21 @@ python train_cnn.py
 
 ___note___: ``CC'' stands for connected components.
 
-### SegNet Result Visualization
+### SegNet Visualization
 
 <div align=center>
+<img src="./img/segnet_model.png" width="600" />
 <img src="./img/segnet_vis.png" width="600" />
 </div>
 
-### LocNet Result Visualization
+### LocNet Visualization
 
 <div align=center>
+<img src="./img/locnet_model.png" width="600" />
 <img src="./img/locnet_vis.png" width="600" />
 </div>
+
+___note___: green boxs are ground truth and red boxs are predictions.
 
 ## Team Member
 
