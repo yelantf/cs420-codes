@@ -167,12 +167,12 @@ def main():
     train_loader = torch.utils.data.DataLoader(
         myMNIST(datapath='../../mnist/mnist_train/'+TRAIN_FILE,
                 cls_labelpath='../../mnist/mnist_train/mnist_train_label',
-                seg_labelpath='../../mnist/mnist_train/'+TRAIN_FILE),
+                seg_labelpath='../../mnist/mnist_train/'+TRAIN_FILE_CC),
         batch_size=args.batch_size, shuffle=True, **kwargs)
     test_loader = torch.utils.data.DataLoader(
         myMNIST(datapath='../../mnist/mnist_test/'+TEST_FILE,
                 cls_labelpath='../../mnist/mnist_test/mnist_test_label',
-                seg_labelpath='../../mnist/mnist_test/'+TEST_FILE),
+                seg_labelpath='../../mnist/mnist_test/'+TEST_FILE_CC),
         batch_size=args.batch_size, shuffle=False, **kwargs)
     # train model
     for epoch in range(1, args.epochs + 1):
