@@ -197,11 +197,11 @@ def main():
     # get data loader
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
     train_loader = torch.utils.data.DataLoader(
-        myMNIST(datapath='../../mnist/mnist_train/'+TRAIN_FILE_CC,
+        myMNIST(datapath='../../mnist/mnist_train/'+TRAIN_FILE,
                 labelpath='../../mnist/mnist_train/mnist_train_label'),
         batch_size=args.batch_size, shuffle=True, **kwargs)
     test_loader = torch.utils.data.DataLoader(
-        myMNIST(datapath='../../mnist/mnist_test/'+TEST_FILE_CC,
+        myMNIST(datapath='../../mnist/mnist_test/'+TEST_FILE,
                 labelpath='../../mnist/mnist_test/mnist_test_label'),
         batch_size=args.batch_size, shuffle=False, **kwargs)
     # train model
