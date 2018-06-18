@@ -1,6 +1,6 @@
 '''
     MNIST training with SegNet+FC (end to end training)
-    for SegNet+CNN end to end training, you can just replace FC model with CNN model, so I will not proveide a repeated version
+    for SegNet+CNN end to end training, you can just replace FC model with CNN model, so I will not provide a repeated version
 
     Author: Chenxi Wang
     Date: June 2018
