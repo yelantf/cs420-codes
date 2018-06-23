@@ -152,14 +152,14 @@ We propose **SegNet** to automatically denoise original images using neural netw
 ___note___: "*i*-th Epoch" stands for the visualization results after training for *i* epochs.
 
 ### LocNet
-We propose **LocNet** to automatically localize digits in original images by tight bounding boxs (BBox) using neural networks. Improvements are significant on both FC and CNN baselines.
+We propose **LocNet** to automatically localize digits in original images by tight bounding boxes (BBox) using neural networks. Improvements are significant on both FC and CNN baselines.
 
 <div align=center>
 <img src="./img/locnet_model.png" width="600" />
 <img src="./img/locnet_vis.png" width="600" />
 </div>
 
-___note___: green boxs are ground truth and red boxs are predictions.
+___note___: green boxes are ground truth and red boxes are predictions.
 
 ## Team Member
 
